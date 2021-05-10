@@ -1,5 +1,6 @@
-
-PROGNAME=user_defined_type
+CC=gcc
+CFLGS=-w -o
+PROGNAME=function_pointers
 
 all: clean compile test
 	@printf "Finished, build application.\n"
@@ -10,8 +11,10 @@ clean:
 
 compile:
 	@printf "Compiling, source code $(PROGNAME)...\n"
-	@gcc $(PROGNAME).c -o $(PROGNAME) -lpthread
-
+	@$(CC) $(PROGNAME).c $(CFLGS) $(PROGNAME) -lpthread
+debug:
+	@printf "Compiling, source code $(PROGNAME)...\n"
+	@$(CC) $(PROGNAME).c -o $(PROGNAME) -lpthread -v
 test:
-	@printf "Testing, application $(PROGNAME)..."
+	@printf "Testing, application $(PROGNAME)...\n"
 	@./$(PROGNAME)
