@@ -3,17 +3,17 @@
 # Date: 09-05-2021
 #
 
-_execfile=($(find * -exec file {} \; | grep -i "executable" | grep -v "ASCII" | cut -d':' -f1))
+_execfiles=($(find * -type f -exec file {} \; | grep -E -iw "elf|executable" | grep -v -iw "ASCII" | cut -d':' -f1))
 
 file_count(){
-	printf ${#_execfile[*]}
+	printf ${#_execfiles[*]}
 }
 
 list(){
-	if [ ${#_execfile[*]} -gt 0 ];
+	if [ ${#_execfiles[*]} -gt 0 ];
 	then
 		printf "\033[33mCurrent Executable in Repository\033[0m\n"
-		for f in `find * -exec file {} \; | grep -i "executable" | grep -v "ASCII" | cut -d':' -f1`;
+		for f in ${_execfiles[*]};
 		do
 			printf "${f}\n"
 		done
@@ -24,9 +24,9 @@ list(){
 }
 
 controlled(){
-	if [ ${#_execfile[*]} -gt 0 ];
+	if [ ${#_execfiles[*]} -gt 0 ];
 	then
-		for f in `find * -exec file {} \; | grep -i "executable" | grep -v "ASCII" | cut -d':' -f1`;
+		for f in ${_execfiles[*]};
 		do
 			printf "Do you want to remove ${f} [ y(es), n(o) ]:\n"
 			read _choice
@@ -42,9 +42,9 @@ controlled(){
 }
 
 force(){
-	if [ ${#_execfile[@]} -gt 0 ];
+	if [ ${#_execfiles[@]} -gt 0 ];
 	then
-		for f in `find * -exec file {} \; | grep -i "executable" | grep -v "ASCII" | cut -d':' -f1`;
+		for f in ${_execfiles[*]};
 		do
 			rm -v ${f}
 		done
